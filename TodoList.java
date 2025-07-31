@@ -258,7 +258,8 @@ class StudyTracker
     public void DeleteFiles()
     {
         System.out.println("----------------------------------------------------");
-       
+        Scanner sobj = new Scanner(System.in);
+
         if(Database.isEmpty())
         {
             System.out.println("There is no such file in this directory");
@@ -272,13 +273,39 @@ class StudyTracker
 
         File currentDir = new File(".");
 
-        File[] csvFiles = currentDir.listFiles();
-        System.out.println("Directory is "+csvFiles);
-
-        if(csvFiles != null && csvFiles > 0)
+        if((currentDir.exists()) && (currentDir.isDirectory()))
         {
-            System.out.println("Files in directory: " + currentDir.getAbsolutePath());
+            File[] files = currentDir.listFiles();
+
+            if(files != null && files.length > 0)
+            {
+                System.out.println("List of the CSV files : ");
+                for(File file : files)
+                {
+                    String fileNames = file.getName();
+                    if(fileNames.contains(".csv"))
+                    {
+                        System.out.println(fileNames);
+                    }
+                }
+                System.out.println("Please enter file name that you want to delete : ");
+                String inputFileName = sobj.nextLine();
+
+                String deleteFile = inputFileName + ".csv";
+                File deleteFileObj = new File(deleteFile);
+
+                if(deleteFileObj.delete())
+                {
+                    System.out.println("File is deleted successfully");
+                }
+            }
+            else 
+            {
+                System.out.println("No files found in the directory");
+            }
         }
+
+
         System.out.println("----------------------------------------------------");
     }
 }
@@ -346,7 +373,7 @@ class TodoList    // StudyTrackerStarter
                     System.out.println("Please enter the valid option");
             }
             
-        }while(iChoice != 6);
+        }while(iChoice != 7);
 
     }
 }
